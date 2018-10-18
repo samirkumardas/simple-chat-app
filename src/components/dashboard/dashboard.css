@@ -1,0 +1,18 @@
+:root {
+    height: 100vh;
+}
+:global(body) {
+  padding: 0;
+  font-family: 'Open Sans', sans-serif !important;
+  height: 100%;
+  background-color: rgba(208, 203, 203, 0.3) !important; 
+}
+
+:global(#root) {
+    height: 100vh;
+}
+
+.dashboard {
+    width: auto;
+    height: 100vh;
+}

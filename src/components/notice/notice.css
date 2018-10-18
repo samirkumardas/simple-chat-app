@@ -1,0 +1,41 @@
+.notice {
+    position: fixed;
+    left: 0;
+    top: -50px;
+    right: 0;
+    height: 55px;
+    z-index: 10;
+    cursor: pointer;
+    -webkit-animation: slidein 0.7s forwards;
+    -webkit-animation-delay: 0.5s;
+    animation: slidein 0.7s forwards;
+    animation-delay: 0.5s;
+}
+
+.errorNotice {
+    border: 1px solid #ec4141;
+    margin: 15px 0px;
+    padding: 10px;
+    background: #ffe7e7;
+}
+
+.generalNotice {
+    border: 1px solid #08942e;
+    margin: 15px 0px;
+    padding: 10px;
+    background: #f3fff0;
+}
+
+.notice abbr {
+    float: right;
+    color: #e02525;
+    font-size: 16px;
+}
+
+@-webkit-keyframes slidein {
+    100% { top: 0px; }
+}
+
+@keyframes slidein {
+    100% { top: 0px; }
+}

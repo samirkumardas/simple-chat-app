@@ -1,0 +1,89 @@
+.rightBar {
+    height: 100%;
+    margin-left: 200px;
+    position: relative;
+}
+.messageProfile {
+    width: 100%;
+    height: 60px;
+    background: #fafbfb;
+    border-bottom: 1px solid #c3c3c3;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.profilePic {
+    font-size: 20px;
+    float: left;
+    height: 40px;
+    width: 40px;
+    border: 1px solid #efabd2;
+    border-radius: 50%;
+    padding: 2px 10px;
+    color: #efabd2;
+    margin-right: 5px;
+    background: #fff;
+}
+.profileText {
+    padding: 6px;
+}
+.messageWrapper {
+    height: auto;
+    min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+}
+.messageInput {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+    height: 40px;
+}
+.messageInput input {
+    height: 100%;
+    width: 100%;
+}
+.messageInput button {
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    width: 50px;
+}
+
+/* Messsage single */
+.message {
+    margin-bottom: 20px;
+}
+.msgMeta {
+    display: flex;
+    margin-bottom: 10px;
+}
+.msgUser {
+    font-weight: bold;
+    padding: 10px 0;
+}
+.msgThumb {
+    font-size: 20px;
+    border: 1px solid #1f559a;
+    margin-right: 8px;
+    text-align: center;
+    padding: 6px 14px;
+    background: #6293ce;
+    color: #fff;
+}
+.msgTime {
+    font-size: 12px;
+    color: #717274;
+    padding: 13px 10px;
+}
+.message p{
+  font-size: 14px;
+}
+
+@media (max-device-width: 767px) {
+    .rightBar {
+        margin-left: 40px;
+    }
+}
