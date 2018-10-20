@@ -4,7 +4,7 @@
     top: -50px;
     right: 0;
     height: 55px;
-    z-index: 10;
+    z-index: 1000;
     cursor: pointer;
     -webkit-animation: slidein 0.7s forwards;
     -webkit-animation-delay: 0.5s;

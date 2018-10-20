@@ -3,7 +3,7 @@ import connector from '../../utils/connector';
 
 import { setNotice, removeNotice } from '../notice/reducer';
 import { showLoader, hideLoader } from '../loader/reducer';
-import { signupReq } from '../dashboard/reducer';
+import { signupReq, doLogin } from '../dashboard/reducer';
 
 function* doPreStuff() {
     yield put(removeNotice());
@@ -18,7 +18,7 @@ function* doPostStuff() {
 function* doErrorStuff(err) {
     yield put(hideLoader());
     yield put(setNotice({
-        message: err.message || err.error,
+        message: err.message || err.errorDesc,
         type: 'error'
     }));
 }
@@ -38,8 +38,7 @@ function* workerSignup(action) {
             'password': password
         };
         const response = yield call(connector.request, data);
-        alert(response);
-        //yield put(insertSlot(response.data.adslots));
+        yield put(doLogin(response));
         yield call(doPostStuff);
     } catch (err) {
         yield call(doErrorStuff, err);

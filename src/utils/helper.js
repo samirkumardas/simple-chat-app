@@ -13,25 +13,14 @@ export const getAPIRequestHeader = (payload, id) => {
     };
 }
 
-const load = () => {
-    let cookies = {};
-    document.cookie.split(';').forEach(function(e) {
-        let key,
-            value;
-        [key,value] = e.split('=');
-        cookies[key.trim()] = value.trim();
-    });
-    return cookies;
-}
-let cookies = load();
-export const cookie = {
+export const storage = {
     set(key, value) {
-        document.cookie = `${key}=${value}`;
+        localStorage.setItem(key, value);
     },
     get(key) {
-        return cookies[key] ? cookies[key] : '';
+        return localStorage.getItem(key);
     },
-    refresh() {
-        cookies = load();
+    remove(key) {
+        localStorage.removeItem(key);
     }
 };

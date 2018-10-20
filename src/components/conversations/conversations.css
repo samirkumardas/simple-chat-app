@@ -18,8 +18,17 @@
 .leftBar h5{
     text-transform: uppercase;
     font-weight: 600;
-    font-size: 1rem;
-    margin: 10px 5px;
+    font-size: .90rem;
+    margin: 25px 5px 10px 5px;
+    color: #98b3d2;
+}
+
+.leftBar h5 a {
+    color: #fff !important;
+    float: right;
+    margin-right: 5px;
+    font-weight: normal;
+    cursor: pointer;
 }
 
 .listItem {
@@ -29,6 +38,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 5px;
+}
+
+.listItem a {
+    color: #fff;
+    font-size: 0.9rem;
 }
 
 .profile {
@@ -51,6 +65,23 @@
 .profileText {
     padding: 6px;
 }
+.noData {
+    font-size: .9rem;
+    color: #d2d2d2;
+    margin-left: 5px;
+}
+
+.logout{
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    cursor: pointer;
+    background: #5a94d0;
+    padding: 5px;
+}
+
 
 @media (max-device-width: 767px) {
     .leftBar {

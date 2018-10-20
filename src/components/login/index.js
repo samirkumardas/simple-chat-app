@@ -13,7 +13,7 @@ class Login extends Component {
   
     onSubmit = (values) => {
         this.props.dispatch(loginReq({
-            username: values.get('email'),
+            email: values.get('email'),
             password: values.get('password')
         }));
     }

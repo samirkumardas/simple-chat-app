@@ -10,9 +10,9 @@ class Connector {
         this.noOfRetry = 1;
         this.keepAliveInterval = false;
         this.lastReconnectTime = this.lastCleanTime  = this.lastPingTime = Date.now();
-        this.socket = new Socket(CONSTANTS.SOCKET_URL);
         this.onReceive = this.onReceive.bind(this);
         this.request = this.request.bind(this);
+        this.socket = new Socket(CONSTANTS.SOCKET_URL, this.onReceive);
         this.socket.connect();
         this.startKeepAliveInterval();
     }
@@ -33,9 +33,21 @@ class Connector {
         });
     }
     onReceive(data) {
-        let packetId = data.packetId;
+        try {
+            data = JSON.parse(data);
+         } catch(parseError) {
+            data = {
+                error: true,
+                errorDesc: 'json parse error'
+            }
+        }
+        let packetId = data.packetId || 0;
         if (this.packets[packetId]) {
-            this.packets[packetId].resolve(data);
+            if (data.error) {
+                this.packets[packetId].reject(data);
+            } else {
+                this.packets[packetId].resolve(data);
+            }
             this.removePacket(packetId);
         }
     }
@@ -60,7 +72,7 @@ class Connector {
         const now = Date.now();
         if ((now - this.lastReconnectTime) < (this.noOfRetry * 1000)) return;
         if (this.noOfRetry < 4) {
-            this.ws.reconnect();
+            this.socket.reconnect();
             this.noOfRetry++;
             this.lastReconnectTime = now;
         }
@@ -70,7 +82,7 @@ class Connector {
         for (let packetId in this.packets) {
             let packet = this.packets[packetId];
             if ((now - packet.time) > this.failedOffset) {
-                packet.data.error = 'Unable to communicate with server!';
+                packet.data.errorDesc = 'Unable to communicate with server!';
                 packet.reject(packet.data);
                 this.removePacket(packetId);
             }
@@ -83,11 +95,11 @@ class Connector {
                 this.cleanFailedPacket();
                 this.lastCleanTime = now;
             }
-
+            /*
             if ((now - this.lastPingTime) > 5000) {
                 this.socket.send('ping');
                 this.lastPingTime = now;
-            }
+            } */
             this.processQueue();
         }, 1000);
     }
