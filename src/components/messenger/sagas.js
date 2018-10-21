@@ -6,12 +6,8 @@ import CONSTANTS from '../../config/constants';
 import { setNotice, removeNotice } from '../notice/reducer';
 import { showLoader, hideLoader } from '../loader/reducer';
 import { hideModal } from '../modal/reducer';
-import { setDefaultConversation } from '../messenger/reducer';
 import { myChannelsReq, membersReq, addChannelReq,
     setMyChannels, setMembers, addChannel, doLogout } from '../dashboard/reducer';
-
-
-    
 
 function* doPreStuff() {
     yield put(removeNotice());
@@ -47,10 +43,7 @@ function* workerMyChannels() {
         };
         const response = yield call(connector.request, data);
         yield put(setMyChannels(response.channels));
-        /* set default conversation */
-        if (response.channels.length > 0) {
-            yield put(setDefaultConversation(response.channels[0]));
-        }
+        //yield call(doPostStuff);
     } catch (err) {
         yield call(doErrorStuff, err);
     }
@@ -98,15 +91,12 @@ function* workerAddChannel(action) {
             members
         };
         const response = yield call(connector.request, data);
-        const channel = {
+        yield put(addChannel({
             id: response.id,
             name: response.name,
             owner: response.owner,
             members: response.members
-        };
-        yield put(addChannel(channel));
-        /* set default conversation if it is very first channel */
-        yield put(setDefaultConversation(channel));
+        }));
         yield put(hideModal());
         yield put(setNotice({
             message: 'Channel has been created successfully.',

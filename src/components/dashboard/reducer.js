@@ -43,7 +43,7 @@ const account = createReducer({
     [doLogout]: (state, payload) => doLogoutAction(state, payload),
     [setMyChannels]: (state, payload) => state.set('channels', fromJS(payload)),
     [setMembers]: (state, payload) => state.set('members', fromJS(payload)),
-    [addChannel]: (state, payload) => state.update('channels', channels => channels.push(payload)),
+    [addChannel]: (state, payload) => state.update('channels', channels => channels.push(fromJS(payload))),
 }, initialState);
 
 export default account;

@@ -24,3 +24,12 @@ export const storage = {
         localStorage.removeItem(key);
     }
 };
+
+export const getChatURL = (id, type) => {
+    const prefix = getURLPrefix(type);
+    return `/messages/${prefix}${id}`;
+}
+
+export const getURLPrefix = (type) => {
+    return type == 'channel' ? 'C' : 'P';
+}

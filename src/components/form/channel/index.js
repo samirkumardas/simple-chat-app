@@ -6,16 +6,10 @@ import InputField from '../render/input';
 import CustomSelect from '../render/custom';
 
 
-const channelForm = props => {
-    const { handleSubmit, loader } = props;
+const channelForm = (props) => {
+    const { handleSubmit, loader, members } = props;
     const btnLoader = loader ? (<i className="fa fa-spinner fa-spin"></i>) : '';
-
-    const members = [ { id: 3, name: "Bananas" },
-                      { id: 4, name: "Mangos" },
-                      { id: 5, name: "Lemons" },
-                      { id: 6, name: "Apricots" }
-                    ];
-      
+    
     return (
         <form onSubmit={handleSubmit}>
           <Field
@@ -23,6 +17,7 @@ const channelForm = props => {
             type="text"
             component={InputField}
             label="Name"
+            autoFocus={true}
           />
           <Field
             name="purpose"
@@ -33,7 +28,7 @@ const channelForm = props => {
           <Field
             name="members"
             component={CustomSelect}
-            suggestions={members}
+            suggestions={members.toJS()}
             label="Members"
           />
           <button className="btn btn-info" type="submit" disabled={loader}>{btnLoader}&nbsp;Submit</button>
@@ -43,10 +38,12 @@ const channelForm = props => {
 
 channelForm.propTypes = {
     loader: PropTypes.bool,
+    members: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired
 };
 
 export default reduxForm({
     form: 'channel',
+    destroyOnUnmount: true,
     validate
 })(channelForm);

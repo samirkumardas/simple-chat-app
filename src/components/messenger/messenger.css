@@ -81,6 +81,18 @@
 .message p{
   font-size: 14px;
 }
+.noChannelYet {
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 10%;
+    word-break: break-word;
+    width: 60%;
+    margin: 6% auto 0%;
+}
+.noChannelYet i {
+    color: #921f0a;
+    font-size: 10rem;
+}
 
 @media (max-device-width: 767px) {
     .rightBar {

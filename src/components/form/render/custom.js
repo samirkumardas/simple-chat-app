@@ -67,6 +67,7 @@ class CustomSelect extends Component {
                     classNames = {classNames}
                     placeholder = {this.props.placeholder}
                     tags = {this.state.tags}
+                    autofocus={false}
                     suggestions = {this.state.suggestions}
                     handleDelete = {this.handleDelete.bind(this)}
                     handleAddition = {this.handleAddition.bind(this)}
@@ -79,7 +80,7 @@ class CustomSelect extends Component {
 
 CustomSelect.defaultProps = {
   tags: [],
-  placeholder: 'Add new member',
+  placeholder: 'Type to add member',
   suggestions: []
 };
 

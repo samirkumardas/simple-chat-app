@@ -1,17 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, matchPath } from 'react-router-dom';
 
 import Loader from '../loader';
 import Notice from '../notice';
 import Modal from '../modal';
 import Channel from '../form/channel';
-import Conversations from '../conversations/conversations';
+import LeftBar from '../leftbar';
 import Messenger from '../messenger/messenger';
-import styles from './dashboard.css';
+import styles from './dashboard.css'; 
 
-import { myChannelsReq, membersReq, doLogout } from '../dashboard/reducer';
+import { showModal, hideModal } from '../modal/reducer';
+//import { setActiveConversation } from '../messenger/reducer';
+import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
 
 class Dashboard extends PureComponent {
     
@@ -19,31 +21,39 @@ class Dashboard extends PureComponent {
         super(props);
         this.onModalSubmit = this.onModalSubmit.bind(this);
         this.onLogout = this.onLogout.bind(this);
-        this.showChannelAddForm = this.showChannelAddForm.bind(this);
-        this.onHideModel = this.onHideModel.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
         this.state = {
             modalContent: Channel,
-            showModal: false
+            modalTitle: 'Add Channel'
         };
     }
     componentDidMount() {
         this.props.dispatch(myChannelsReq());
         this.props.dispatch(membersReq());
     }
-    onModalSubmit() {
-
+    componentDidUpdate() {
+        /*  redirect to a conversation by default */
+        const matcher = { path: '/messages', exact: true, strict: false };
+        if (matchPath(this.props.history.location.pathname, matcher)) {
+            if (this.props.activeConversation) {
+                this.props.history.replace(`/messages/${this.props.activeConversation}`);
+            }
+        }
     }
-    showChannelAddForm() {
-        this.setState({
-            showModal: true,
-            modalContent: Channel
-        });
+    onModalSubmit(values) {
+        const members = values.get('members').map(member => member.id);
+        this.props.dispatch(addChannelReq({
+            name: values.get('name'),
+            purpose: values.get('purpose'),
+            members: members
+        }));
     }
-    onHideModel() {
-        this.setState({
-            showModal: false,
-            modalContent: Channel
-        });
+    toggleModal() {
+        if (this.props.modal) {
+            this.props.dispatch(hideModal());
+        } else {
+            this.props.dispatch(showModal());
+        }
     }
     onLogout() {
         this.props.dispatch(doLogout());
@@ -52,27 +62,30 @@ class Dashboard extends PureComponent {
     render() {
         
         if (!this.props.loginState) return <Redirect to="/" />;
-        if (this.props.loader) return <Loader showLoader={this.props.loader} />;
+        if (this.props.loader && !this.props.modal) return <Loader showLoader={this.props.loader} />;
 
         const { channels, members, userName } = this.props;
+        const modalProps = { members, loader: this.props.loader, onSubmit: this.onModalSubmit };
+
         return (
              <div className={styles.dashboard}>
                 <Notice />
                 <Modal
+                    title = {this.state.modalTitle}
                     content = {this.state.modalContent}
-                    onSubmit = {this.onModalSubmit}
-                    showModal = {this.state.showModal}
-                    onHideModel = {this.onHideModel}
+                    props = {modalProps}
+                    showModal = {this.props.modal}
+                    onCloseModel = {this.toggleModal}
                 />
-                <Conversations
+                <LeftBar
                     channels = {channels}
                     members = {members}
                     userName = {userName}
                     onLogout = {this.onLogout}
-                    showChannelForm = {this.showChannelAddForm}
+                    onChannelForm = {this.toggleModal}
                 />
                 <Messenger />
-              </div> 
+             </div> 
          );
     }
 }
@@ -84,7 +97,8 @@ const mapStateToProps = (state) => {
         loginState: state.getIn(['account', 'loginState']),
         userName: state.getIn(['account', 'userName']),
         members: state.getIn(['account', 'members']),
-        channels: state.getIn(['account', 'channels'])
+        channels: state.getIn(['account', 'channels']),
+        activeConversation: state.getIn(['messenger', 'active'])
     };
 };
 
@@ -95,7 +109,9 @@ Dashboard.propTypes = {
     members: PropTypes.object,
     channels: PropTypes.object,
     userName: PropTypes.string,
-    dispatch: PropTypes.func.isRequired
+    activeConversation: PropTypes.string,
+    history: PropTypes.object,
+    dispatch: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, dispatch => ({dispatch}))(Dashboard);

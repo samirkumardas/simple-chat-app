@@ -10,9 +10,8 @@ class Modal extends PureComponent {
   
     render() {
          if (!this.props.showModal) return '';
-         const {title, closeBtnLable, saveBtnLabel, showClose, onHideModel } = this.props;
-         const close = showClose ? (<button onClick = {onHideModel} type="button" className="close"><span>&times;</span></button>) : '';
-         const closeBtn = showClose ? (<button onClick = {onHideModel} type="button" className="btn btn-secondary">{ closeBtnLable }</button>) : '';
+         const {title, onCloseModel, props } = this.props;
+         const close = (<button onClick = {onCloseModel} type="button" className="close"><span>&times;</span></button>);
          const modalCls = `modal ${styles.displayModal}`;
          const Content = this.props.content;
          
@@ -20,17 +19,13 @@ class Modal extends PureComponent {
              <div className={styles.modalOverlay}>
                 <div className={modalCls}>
                   <div className="modal-dialog">
-                    <div className="modal-content">
+                      <div className="modal-content">
                        <div className="modal-header">
                         <h5 className="modal-title">{ title }</h5>
                            { close }
                        </div>
                        <div className="modal-body">
-                         <Content />
-                       </div>
-                       <div className="modal-footer">
-                         { closeBtn }
-                         <button onClick={this.props.onSubmit} type="button" className="btn btn-primary">{ saveBtnLabel }</button>
+                         <Content {...props} />
                        </div>
                      </div>
                    </div>
@@ -42,20 +37,14 @@ class Modal extends PureComponent {
 
 Modal.defaultProps = {
   title: 'Your Modal',
-  closeBtnLable: 'Close',
-  saveBtnLabel: 'Save',
-  showClose: true
+  props: {}
 };
 
 Modal.propTypes = {
-    showClose: PropTypes.bool,
     showModal: PropTypes.bool,
     title: PropTypes.string,
-    closeBtnLable: PropTypes.string,
-    saveBtnLabel: PropTypes.string,
-    onSubmit: PropTypes.func.isRequired,
-    onHideModel: PropTypes.func,
     content: PropTypes.func.isRequired,
-    render: PropTypes.func
+    props: PropTypes.object,
+    onCloseModel: PropTypes.func
 };
 export default Modal;

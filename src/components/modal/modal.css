@@ -15,3 +15,7 @@
 .displayModal {
   display: block !important;
 }
+
+.modalOverlay button[type="submit"] {
+    float: right;
+}
