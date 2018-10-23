@@ -10,9 +10,6 @@ import { setDefaultConversation } from '../messenger/reducer';
 import { myChannelsReq, membersReq, addChannelReq,
     setMyChannels, setMembers, addChannel, doLogout } from '../dashboard/reducer';
 
-
-    
-
 function* doPreStuff() {
     yield put(removeNotice());
     yield put(showLoader());

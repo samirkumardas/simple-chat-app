@@ -83,13 +83,32 @@
     padding: 5px;
 }
 
+.active {
+    color: #11941e !important;
+}
 
 @media (max-device-width: 767px) {
     .leftBar {
         left: -160px;
+        z-index: 1000;
     }
     .mobMenu {
         display: block;
     }
+}
 
+@media (max-width: 767px) {
+    .leftBar {
+        left: -160px;
+        z-index: 1000;
+    }
+    .mobMenu {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+   .leftBar {
+      left: 0 !important;
+   }
 }

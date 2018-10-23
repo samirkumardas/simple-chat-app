@@ -62,7 +62,6 @@ const makeDefaultActive = (state, channel) => {
         };
         return makeActive(state, payload);
     }
-    
     return state;
 };
 

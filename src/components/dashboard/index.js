@@ -11,8 +11,10 @@ import LeftBar from '../leftbar';
 import Messenger from '../messenger';
 import styles from './dashboard.css'; 
 
+import { getTypeFromKey } from '../../utils/helper';
 import { showModal, hideModal } from '../modal/reducer';
 import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
+import { setActiveConversation } from '../messenger/reducer';
 
 class Dashboard extends PureComponent {
     
@@ -38,6 +40,34 @@ class Dashboard extends PureComponent {
                 this.props.history.replace(`/messages/${this.props.activeConversation}`);
             }
         }
+
+        /* update active conversation */
+        if (this.props.activeConversation 
+            && this.props.match.params.key
+            && this.props.activeConversation != this.props.match.params.key) {
+            const key = this.props.match.params.key,
+                  { type, id } = getTypeFromKey(key);
+
+            if ((type == 'channel' && this.props.channels.size != 0)
+                || (type == 'private' && this.props.members.size != 0)) {
+                const payload = {
+                    key,
+                    type,
+                    title: this.getConversationTitle(id, type)
+                };
+                this.props.dispatch(setActiveConversation(payload));
+            }
+        }
+    }
+    getConversationTitle(id, type) {
+        const items = type == 'channels' ? this.props.channels : this.props.members;
+        let title = '';
+        items.map(item => {
+            if (item.get('id') == id) {
+                title = item.get('name');
+            }
+        });
+        return title;
     }
     onModalSubmit(values) {
         const members = values.get('members').map(member => member.id);
@@ -83,7 +113,7 @@ class Dashboard extends PureComponent {
                     onLogout = {this.onLogout}
                     onChannelForm = {this.toggleModal}
                 />
-                <Messenger />
+                <Messenger key={this.activeConversation} />
              </div> 
          );
     }
@@ -110,6 +140,7 @@ Dashboard.propTypes = {
     userName: PropTypes.string,
     activeConversation: PropTypes.string,
     history: PropTypes.object,
+    match: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
 };
 

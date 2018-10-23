@@ -21,18 +21,21 @@ class Messenger extends PureComponent {
     }
 
     componentDidMount() {
-        const key = this.props.activeConversation;
-        if (key) {
-            this.props.dispatch(getMessages({
-                key
-            }));
-        }
         /* Subscribe to broadcased messages */
         connector.subscribe(this.onBroadcastedMessage);
     }
 
     componentWillUnmount() {
         connector.unsubscribe(this.onBroadcastedMessage);
+    }
+
+    componentDidUpdate(prevProps) {
+        const key = this.props.activeConversation;
+        if (key && prevProps.activeConversation != key) {
+            this.props.dispatch(getMessages({
+                key
+            }));
+        }
     }
 
     onBroadcastedMessage(data) {
@@ -70,6 +73,7 @@ class Messenger extends PureComponent {
                 />
                 <MessagengerBody
                     messages = { messages }
+                    activeConversation = {activeConversation}
                 />
                 <MessagengerFooter
                     activeConversation = {activeConversation}

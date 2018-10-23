@@ -101,3 +101,9 @@
         margin-left: 40px;
     }
 }
+
+@media (max-width: 767px) {
+    .rightBar {
+        margin-left: 40px;
+    }
+}
