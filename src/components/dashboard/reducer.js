@@ -21,19 +21,19 @@ const getLoginState = () => !!storage.get(CONSTANTS.AUTH_KEY);
 const doLoginAction = (state, payload) => {
     storage.set(CONSTANTS.AUTH_KEY, payload.token);
     storage.set(CONSTANTS.USER_NAME, payload.name);
+    storage.set(CONSTANTS.USER_ID, payload.id);
     state = state.merge({'loginState':true, userName: payload.name, userId: payload.id});
     return state;
 };
-const doLogoutAction = (state) => {
+const doLogoutAction = () => {
     storage.remove(CONSTANTS.AUTH_KEY);
-    state = state.merge({'loginState':false, userName: '', userId: ''});
-    return state;
+    return initialState;
 };
 
 const initialState = fromJS({
     loginState: getLoginState(),
     userName: storage.get(CONSTANTS.USER_NAME) || '',
-    userId: '',
+    userId: storage.get(CONSTANTS.USER_ID) || '',
     members: [],
     channels: []
 });

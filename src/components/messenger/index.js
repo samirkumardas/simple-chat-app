@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import connector from '../../utils/connector';
-import { getKeyPrefix } from '../../utils/helper';
 
 import MessagengerHeader from './header';
 import MessagengerBody from './body';
@@ -48,13 +47,7 @@ class Messenger extends PureComponent {
 
     onBroadcastedMessage(data) {
         if (data.act === 'message') {
-            const to = data.to,
-                  from = data.from,
-                  type = data.type,
-                  key = type == 'channel' ? getKeyPrefix('channel') + to : getKeyPrefix('private') + from;
-
             this.props.dispatch(addMessage({
-                key,
                 message: data
             }));
         }

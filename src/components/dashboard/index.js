@@ -14,7 +14,7 @@ import styles from './dashboard.css';
 import { getTypeFromKey } from '../../utils/helper';
 import { showModal, hideModal } from '../modal/reducer';
 import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
-import { setActiveConversation } from '../messenger/reducer';
+import { setActiveConversation, resetAllConversaions } from '../messenger/reducer';
 
 class Dashboard extends PureComponent {
     
@@ -60,7 +60,7 @@ class Dashboard extends PureComponent {
         }
     }
     getConversationTitle(id, type) {
-        const items = type == 'channels' ? this.props.channels : this.props.members;
+        const items = type == 'channel' ? this.props.channels : this.props.members;
         let title = '';
         items.map(item => {
             if (item.get('id') == id) {
@@ -86,6 +86,7 @@ class Dashboard extends PureComponent {
     }
     onLogout() {
         this.props.dispatch(doLogout());
+        this.props.dispatch(resetAllConversaions());
     }
 
     render() {

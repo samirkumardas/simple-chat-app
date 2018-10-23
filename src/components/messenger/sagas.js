@@ -36,12 +36,13 @@ function* doErrorStuff(err) {
 function* workerGetMessages(action) {
     const token = storage.get(CONSTANTS.AUTH_KEY),
           key = action.payload.key,
-          {id} = getTypeFromKey(key);
+          {type, id} = getTypeFromKey(key);
     try {
         //yield call(doPreStuff);
         const data = {
             'act': 'messages',
             id,
+            type,
             token
         };
         const response = yield call(connector.request, data);
@@ -78,8 +79,7 @@ function* workerSendMessage(action) {
         };
         const response = yield call(connector.request, data);
         yield put(addMessage({
-            key,
-            message: response
+           message: response
         }));
         //yield call(doPostStuff);
     } catch (err) {

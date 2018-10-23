@@ -22,9 +22,9 @@ class MessagengerBody extends PureComponent {
         const messages = this.props.messages;
         return (
             <div ref={this.messengerBodyRef} className={styles.messageWrapper}>
-               { messages.map(message => {
+               { messages.valueSeq().map((message, index) => {
                     let showUser = false;
-                    if (this.lastUser !== message.get('from')) {
+                    if (this.lastUser !== message.get('from') || index == 0) {
                         this.lastUser = message.get('from');
                         showUser = true;
                     }
