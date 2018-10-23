@@ -8,11 +8,10 @@ import Notice from '../notice';
 import Modal from '../modal';
 import Channel from '../form/channel';
 import LeftBar from '../leftbar';
-import Messenger from '../messenger/messenger';
+import Messenger from '../messenger';
 import styles from './dashboard.css'; 
 
 import { showModal, hideModal } from '../modal/reducer';
-//import { setActiveConversation } from '../messenger/reducer';
 import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
 
 class Dashboard extends PureComponent {

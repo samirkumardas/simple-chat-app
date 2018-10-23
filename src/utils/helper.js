@@ -26,10 +26,22 @@ export const storage = {
 };
 
 export const getChatURL = (id, type) => {
-    const prefix = getURLPrefix(type);
+    const prefix = getKeyPrefix(type);
     return `/messages/${prefix}${id}`;
 }
 
-export const getURLPrefix = (type) => {
+export const getKeyPrefix = (type) => {
     return type == 'channel' ? 'C' : 'P';
+}
+
+export const getTypeFromKey = (key) => {
+    const type = key.toString().charAt(0) == 'C' ? 'channel' : 'private';
+    return {
+        type,
+        id: key.slice(1)
+    };
+}
+
+export const getNameInitial = (name) => {
+    return name.charAt(0).toUpperCase();
 }

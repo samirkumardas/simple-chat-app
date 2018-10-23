@@ -5,6 +5,7 @@ class Connector {
     constructor() {
         this.packets = Object.create(null);
         this.queue = [];
+        this.subscribers = [];
         this.packetId = 1;
         this.failedOffset = 10000;
         this.noOfRetry = 1;
@@ -15,6 +16,19 @@ class Connector {
         this.socket = new Socket(CONSTANTS.SOCKET_URL, this.onReceive);
         this.socket.connect();
         this.startKeepAliveInterval();
+    }
+    subscribe(fn) {
+        this.subscribers.push(fn);
+    }
+    unsubscribe(fn) {
+        this.subscribers = this.subscribers.filter( each => {
+             return fn !== each;
+        });
+    }
+    broadcast(data) {
+        this.subscribers.forEach(fn => {
+            fn(data);
+        });
     }
     getPacketId() {
         return this.packetId++;
@@ -49,6 +63,8 @@ class Connector {
                 this.packets[packetId].resolve(data);
             }
             this.removePacket(packetId);
+        } else {
+            this.broadcast(data);
         }
     }
     removePacket(packetId) {

@@ -1,27 +1,27 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import connector from '../../utils/connector';
-import { storage } from '../../utils/helper';
+import { storage, getTypeFromKey } from '../../utils/helper';
 import CONSTANTS from '../../config/constants';
 
-import { setNotice, removeNotice } from '../notice/reducer';
-import { showLoader, hideLoader } from '../loader/reducer';
-import { hideModal } from '../modal/reducer';
-import { myChannelsReq, membersReq, addChannelReq,
-    setMyChannels, setMembers, addChannel, doLogout } from '../dashboard/reducer';
+import { setNotice } from '../notice/reducer'; //removeNotice
+//import { showLoader, hideLoader } from '../loader/reducer';
+//import { hideModal } from '../modal/reducer';
+import { getMessages, setMessages, sendMessage, addMessage } from '../messenger/reducer';
+import { doLogout } from '../dashboard/reducer';
 
+/*
 function* doPreStuff() {
     yield put(removeNotice());
     yield put(showLoader());
 }
 
-
 function* doPostStuff() {
     yield put(hideLoader());
-}
+} */
 
 function* doErrorStuff(err) {
     let message = err.message || err.errorDesc;
-    yield put(hideLoader());
+    //yield put(hideLoader());
     if (message == 'INVALID_SESSION') {
         message = 'Your session has been expired. Please login.';
         yield put(doLogout());
@@ -32,82 +32,61 @@ function* doErrorStuff(err) {
     }));
 }
 
-/* Fetch channels */
-function* workerMyChannels() {
-    const token = storage.get(CONSTANTS.AUTH_KEY);
+/* Fetch messages  */
+function* workerGetMessages(action) {
+    const token = storage.get(CONSTANTS.AUTH_KEY),
+          key = action.payload.key,
+          {id} = getTypeFromKey(key);
     try {
-        yield call(doPreStuff);
+        //yield call(doPreStuff);
         const data = {
-            'act': 'channels',
+            'act': 'messages',
+            id,
             token
         };
         const response = yield call(connector.request, data);
-        yield put(setMyChannels(response.channels));
+        yield put(setMessages({
+            key,
+            messages: response.messages
+        }));
         //yield call(doPostStuff);
     } catch (err) {
         yield call(doErrorStuff, err);
     }
 }
 
-export function* watcherMyChannels() {
-    yield takeLatest(myChannelsReq.getType(), workerMyChannels);
+export function* watcherGetMessages() {
+    yield takeLatest(getMessages.getType(), workerGetMessages);
 }
 
-/* Fetch members */
-function* workerMembers() {
-    const token = storage.get(CONSTANTS.AUTH_KEY);
-    try {
-        yield call(doPreStuff);
-        const data = {
-            'act': 'members',
-            token
-        };
-        const response = yield call(connector.request, data);
-        yield put(setMembers(response.members));
-        yield call(doPostStuff);
-    } catch (err) {
-        yield call(doErrorStuff, err);
-    }
-}
 
-export function* watcherMembers() {
-    yield takeLatest(membersReq.getType(), workerMembers);
-}
-
-/* add new channel */
-function* workerAddChannel(action) {
+/* send message */
+function* workerSendMessage(action) {
     const token = storage.get(CONSTANTS.AUTH_KEY),
-          name = action.payload.name,
-          purpose = action.payload.purpose,
-          members = action.payload.members;
+          key = action.payload.key,
+          content = action.payload.content,
+          {type, id} = getTypeFromKey(key);
 
     try {
-        yield call(doPreStuff);
+        //yield call(doPreStuff);
         const data = {
-            'act': 'add_channel',
+            'act': 'message',
             token,
-            name,
-            purpose,
-            members
+            to: id,
+            type,
+            content
         };
         const response = yield call(connector.request, data);
-        yield put(addChannel({
-            id: response.id,
-            name: response.name,
-            owner: response.owner,
-            members: response.members
+        yield put(addMessage({
+            key,
+            message: response
         }));
-        yield put(hideModal());
-        yield put(setNotice({
-            message: 'Channel has been created successfully.',
-            type: 'success'
-        }));
-        yield call(doPostStuff);
+        //yield call(doPostStuff);
     } catch (err) {
         yield call(doErrorStuff, err);
     }
 }
 
-export function* watcherAddChannel() {
-    yield takeLatest(addChannelReq.getType(), workerAddChannel);
+export function* watcherSendMessage() {
+    yield takeLatest(sendMessage.getType(), workerSendMessage);
 }
