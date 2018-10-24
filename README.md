@@ -66,4 +66,6 @@ Want to add some other basic features including:
 2. Supporting other message type e.g image, video
 3. Showing message status e.g read, delivered
 4. Showing Typing... status while other user typing something.
+5. Showing User presence 
+6. Fixing multi-session issue.
 
