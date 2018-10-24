@@ -9,7 +9,8 @@ module.exports = merge(common, {
    devtool: 'inline-source-map',
    devServer: {
       contentBase: path.join(__dirname, "dist"),
-      historyApiFallback: true
+      historyApiFallback: true,
+      port: 8080
    },
    plugins: [
     new HtmlWebpackPlugin({template: './src/index.html'}),

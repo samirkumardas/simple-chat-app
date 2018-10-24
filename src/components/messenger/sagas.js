@@ -3,18 +3,20 @@ import connector from '../../utils/connector';
 import { storage, getTypeFromKey } from '../../utils/helper';
 import CONSTANTS from '../../config/constants';
 
+import { hideLoader } from '../loader/reducer';
 import { setNotice } from '../notice/reducer';
 import { getMessages, setMessages, sendMessage, addMessage } from '../messenger/reducer';
 import { doLogout } from '../dashboard/reducer';
 
 function* doErrorStuff(err) {
-    let message = err.message || err.errorDesc;
-    if (message == 'INVALID_SESSION') {
-        message = 'Your session has been expired. Please login.';
+    let errorDesc = err.message || err.errorDesc;
+    if (errorDesc == 'INVALID_SESSION') {
+        errorDesc = 'Your session has been expired. Please login.';
+        yield put(hideLoader());
         yield put(doLogout());
     }
     yield put(setNotice({
-        message,
+        message: errorDesc.toString(),
         type: 'error'
     }));
 }

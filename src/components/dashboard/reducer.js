@@ -25,9 +25,12 @@ const doLoginAction = (state, payload) => {
     state = state.merge({'loginState':true, userName: payload.name, userId: payload.id});
     return state;
 };
-const doLogoutAction = () => {
+const doLogoutAction = (state) => {
     storage.remove(CONSTANTS.AUTH_KEY);
-    return initialState;
+    storage.remove(CONSTANTS.USER_ID);
+    storage.remove(CONSTANTS.USER_NAME);
+    state = state.merge({'loginState':false, userName: '', userId: ''});
+    return state;
 };
 
 const initialState = fromJS({

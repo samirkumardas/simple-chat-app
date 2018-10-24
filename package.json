@@ -11,7 +11,11 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:samirkumardas/simple-chat-app.git"
+   },
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
@@ -35,6 +39,7 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
+    "express": "^4.16.4",
     "immutable": "^3.8.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",

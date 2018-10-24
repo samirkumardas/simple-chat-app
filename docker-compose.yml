@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  client:
+    build:
+      context: .
+    networks:
+      - chatapp-network
+    depends_on:
+      - server
+    ports:
+      - "8080:8080"
+  server:
+    build:
+      context: ./server
+    networks:
+      - chatapp-network
+    depends_on: 
+      - database
+    ports:
+      - "3000:3000"
+
+  database:
+    image: mongo
+    networks:
+      - chatapp-network
+
+networks:
+  chatapp-network:
+    driver: bridge

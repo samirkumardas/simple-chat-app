@@ -21,14 +21,15 @@ function* doPostStuff() {
 }
 
 function* doErrorStuff(err) {
-    let message = err.message || err.errorDesc;
+    let errorDesc = err.message || err.errorDesc;
     yield put(hideLoader());
-    if (message == 'INVALID_SESSION') {
-        message = 'Your session has been expired. Please login.';
+    if (errorDesc == 'INVALID_SESSION') {
+        errorDesc = 'Your session has been expired. Please login.';
+        yield put(hideLoader());
         yield put(doLogout());
     }
     yield put(setNotice({
-        message,
+        message: errorDesc.toString(),
         type: 'error'
     }));
 }

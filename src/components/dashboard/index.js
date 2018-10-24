@@ -14,7 +14,7 @@ import styles from './dashboard.css';
 import { getTypeFromKey } from '../../utils/helper';
 import { showModal, hideModal } from '../modal/reducer';
 import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
-import { setActiveConversation, resetAllConversaions } from '../messenger/reducer';
+import { setActiveConversation } from '../messenger/reducer';
 
 class Dashboard extends PureComponent {
     
@@ -86,7 +86,6 @@ class Dashboard extends PureComponent {
     }
     onLogout() {
         this.props.dispatch(doLogout());
-        this.props.dispatch(resetAllConversaions());
     }
 
     render() {
