@@ -45,7 +45,10 @@ test3@test.com / 123456
 
 Live demo URL: https://chat-app-static-server.herokuapp.com
 
+(Test users are available there also)
+
 Note: demo app is running on heroku free hosting so server availability can not be guaranteed.  
+
 
 ## Features Implemented 
 
