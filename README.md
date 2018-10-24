@@ -22,14 +22,16 @@ React, Redux, Redux-Saga, Immutable.js, MongoDB, nodeJS, WebSocket
 
 2. Change current to directory simple-chat-app: `cd simple-chat-app`
 
-3. Define MongoDB URL on server/config/constant.js
+3. Adjust MongoDB URL on server/config/constant.js
 
 4. Change currenty directory to `server` and Start server using the command: `node app.js`
 
 5. Now get back to `simple-chat-app` directory and run the command: `npm start` (it will run the application with webpack devserver)
 
 
-## Features Implemented
+## Future Plan
+
+Want to add some other basic features like:
 
 1. Login, Registration
 2. Channel Creation
