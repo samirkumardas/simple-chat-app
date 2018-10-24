@@ -31,7 +31,7 @@ React, Redux, Redux-Saga, Immutable.js, MongoDB, nodeJS, WebSocket
 
 ## Future Plan
 
-Want to add some other basic features like:
+Want to add some other basic features including:
 
 1. Login, Registration
 2. Channel Creation
