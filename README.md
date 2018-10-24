@@ -28,6 +28,24 @@ React, Redux, Redux-Saga, Immutable.js, MongoDB, nodeJS, WebSocket
 
 5. Now get back to `simple-chat-app` directory and run the command: `npm start` (it will run the application with webpack devserver)
 
+## Test Data
+
+Server will auto populate with some test users if it finds empty database. Here are test users:
+
+# User Login / Password
+
+test1@test.com / 123456
+
+test2@test.com / 123456
+
+test3@test.com / 123456
+
+
+## Live Demo:
+
+Live demo URL: https://chat-app-static-server.herokuapp.com
+
+Note: demo app is running on heroku free hosting so server availability can not be guaranteed.  
 
 ## Features Implemented 
 
