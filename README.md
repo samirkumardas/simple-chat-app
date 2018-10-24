@@ -32,7 +32,7 @@ React, Redux, Redux-Saga, Immutable.js, MongoDB, nodeJS, WebSocket
 
 Server will auto populate with some test users if it finds empty database. Here are test users:
 
-# User Login / Password
+### User Login / Password
 
 test1@test.com / 123456
 
