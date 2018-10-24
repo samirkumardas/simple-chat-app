@@ -29,9 +29,7 @@ React, Redux, Redux-Saga, Immutable.js, MongoDB, nodeJS, WebSocket
 5. Now get back to `simple-chat-app` directory and run the command: `npm start` (it will run the application with webpack devserver)
 
 
-## Future Plan
-
-Want to add some other basic features including:
+## Features Implemented 
 
 1. Login, Registration
 2. Channel Creation
@@ -39,7 +37,9 @@ Want to add some other basic features including:
 4. Private Chat - only text message
 
 
-## To be Implemented
+## Future Plan
+
+Want to add some other basic features including:
 
 1. Adding new members to existing channnel
 2. Supporting other message type e.g image, video
