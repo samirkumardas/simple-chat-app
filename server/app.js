@@ -7,7 +7,7 @@ const PacketHandler = require('./packet-handler');
 
 /* middleware */
 const authenticate = require('./middleware/authenticate');
-const actionHandler = require('./middleware/action-handler');
+const actionProcessor = require('./middleware/action-processor');
 const broadcastMessage = require('./middleware/broadcast-message');
 
 const PORT = process.env.PORT || constant.PORT;
@@ -16,7 +16,10 @@ const PORT = process.env.PORT || constant.PORT;
 mongoose.connect(constant.MONGO_URL, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
-db.on('error', () => console.log('Unable to connect with database.'));
+db.on('error', (error) => { 
+    console.log(`Unable to connect with database - ${error}`);
+    process.exit();
+});
 db.once('open', () => {
     modelCreator();
     addDemoData();
@@ -25,7 +28,7 @@ db.once('open', () => {
 
 const messageHandler = new PacketHandler();
 messageHandler.use(authenticate);
-messageHandler.use(actionHandler);
+messageHandler.use(actionProcessor);
 messageHandler.use(broadcastMessage);
 
 const wss = new ws.Server({ port: PORT });
@@ -35,6 +38,7 @@ wss.on('connection', (ws) => {
         messageHandler.process(packet, ws);
     });
 });
+
 
 /* Only Demostration purpose */
 const importData = require('./demo-data');

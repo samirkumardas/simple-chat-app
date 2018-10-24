@@ -6,15 +6,14 @@ import CONSTANTS from '../../config/constants';
 import { setNotice, removeNotice } from '../notice/reducer';
 import { showLoader, hideLoader } from '../loader/reducer';
 import { hideModal } from '../modal/reducer';
-import { setDefaultConversation } from '../messenger/reducer';
+import { setDefaultConversation, resetAllConversaions } from '../messenger/reducer';
 import { myChannelsReq, membersReq, addChannelReq,
-    setMyChannels, setMembers, addChannel, doLogout } from '../dashboard/reducer';
+    setMyChannels, setMembers, addChannel, logoutReq, doLogout } from '../dashboard/reducer';
 
 function* doPreStuff() {
     yield put(removeNotice());
     yield put(showLoader());
 }
-
 
 function* doPostStuff() {
     yield put(hideLoader());
@@ -118,4 +117,24 @@ function* workerAddChannel(action) {
 
 export function* watcherAddChannel() {
     yield takeLatest(addChannelReq.getType(), workerAddChannel);
+}
+
+/* Logout  */
+function* workerLogout() {
+    const token = storage.get(CONSTANTS.AUTH_KEY);
+    try {
+        const data = {
+            'act': 'logout',
+            token
+        };
+        const response = yield call(connector.request, data);
+        yield put(doLogout(response));
+        yield put(resetAllConversaions());
+    } catch (err) {
+        yield call(doErrorStuff, err);
+    }
+}
+
+export function* watcherLogout() {
+    yield takeLatest(logoutReq.getType(), workerLogout);
 }

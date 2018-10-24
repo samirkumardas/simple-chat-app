@@ -1,4 +1,5 @@
 const userSocket = require('./ws-handler');
+const constant = require('./config/constant');
 
 function PacketHandler(fn) {
     this.middlewares = [];
@@ -21,6 +22,12 @@ PacketHandler.prototype.process = function process(packet, ws) {
         }};
     }
 
+    if (packet.act =='ping') {
+        packet.reply.act = 'pong';
+        done();
+        return;
+    }
+
     function done() {
         if (packet && packet.reply) {
             ws.send(JSON.stringify(packet.reply));
@@ -28,6 +35,7 @@ PacketHandler.prototype.process = function process(packet, ws) {
 
         /* save session associated with a user */
         if (packet.__id
+            && constant.SESSION_LESS_ACTION.indexOf(packet.act) === -1
             && userSocket.get(packet.__id) !== ws) {
             userSocket.set(packet.__id, ws);
         }

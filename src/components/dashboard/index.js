@@ -9,11 +9,11 @@ import Modal from '../modal';
 import Channel from '../form/channel';
 import LeftBar from '../leftbar';
 import Messenger from '../messenger';
-import styles from './dashboard.css'; 
+import styles from './dashboard.css';
 
 import { getTypeFromKey } from '../../utils/helper';
 import { showModal, hideModal } from '../modal/reducer';
-import { myChannelsReq, membersReq, addChannelReq, doLogout } from '../dashboard/reducer';
+import { myChannelsReq, membersReq, addChannelReq, logoutReq } from '../dashboard/reducer';
 import { setActiveConversation } from '../messenger/reducer';
 
 class Dashboard extends PureComponent {
@@ -85,7 +85,7 @@ class Dashboard extends PureComponent {
         }
     }
     onLogout() {
-        this.props.dispatch(doLogout());
+        this.props.dispatch(logoutReq());
     }
 
     render() {

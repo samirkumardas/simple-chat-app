@@ -4,7 +4,7 @@ const constant = {
     SALT_ROUNDS: 10,
     TOKEN_VALIDITTY: (60 * 60 * 24),
     MONGO_URL: 'mongodb://database:27017/chat-app',
-    SESSION_LESS_ACTION: ['signup', 'login'],
+    SESSION_LESS_ACTION: ['signup', 'login', 'logout'],
     BROADCAST_ACTIONS: ['message']
 }
 

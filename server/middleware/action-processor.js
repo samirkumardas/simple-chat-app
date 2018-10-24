@@ -27,6 +27,11 @@ module.exports = function (packet, next, done) {
             email: packet.email,
             password: packet.password
          });
+    } else if (packet.act == 'logout') {
+         promise = userAction.logout({
+            token: packet.token,
+            __id: packet.__id
+         });
     } else if (packet.act == 'add_channel') {
         promise = channelAction.addChannel({
             name: packet.name,

@@ -63,7 +63,7 @@ class Connector {
                 this.packets[packetId].resolve(data);
             }
             this.removePacket(packetId);
-        } else {
+        } else if (data.act && data.act !=='pong') {
             this.broadcast(data);
         }
     }
@@ -111,11 +111,13 @@ class Connector {
                 this.cleanFailedPacket();
                 this.lastCleanTime = now;
             }
-            /*
-            if ((now - this.lastPingTime) > 5000) {
-                this.socket.send('ping');
+
+            if ((now - this.lastPingTime) > 30000) {
+                this.socket.send({
+                    act: 'ping'
+                });
                 this.lastPingTime = now;
-            } */
+            }
             this.processQueue();
         }, 1000);
     }

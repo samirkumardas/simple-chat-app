@@ -33,6 +33,7 @@ function* workerGetMessages(action) {
             type,
             token
         };
+        /*TODO -- showing message before sending to senver. Ignoring now for the sake of simplicity */
         const response = yield call(connector.request, data);
         yield put(setMessages({
             key,

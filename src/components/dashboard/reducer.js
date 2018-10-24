@@ -6,6 +6,7 @@ import CONSTANTS from '../../config/constants';
 /* Request action */
 export const loginReq =  createAction('LOGIN_REQ');
 export const signupReq =  createAction('SIGNUP_REQ');
+export const logoutReq =  createAction('LOGOUT_REQ');
 export const myChannelsReq =  createAction('MY_CHANNELS_REQ');
 export const membersReq =  createAction('MEMBERS_REQ');
 export const addChannelReq =  createAction('ADD_CHANNEL_REQ');

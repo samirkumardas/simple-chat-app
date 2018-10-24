@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const constant = require('../config/constant');
+const userSocket = require('../ws-handler');
 
 class UserAction {
     constructor() {
@@ -87,7 +88,14 @@ class UserAction {
                 });
         });
     }
-
+    logout(data) {
+        return new Promise((resolve, reject) => {
+            userSocket.remove(data.__id);
+            resolve({
+                ok: true
+            });
+        });
+    }
     geUsers(data) {
         return new Promise((resolve, reject) => {
             let User = mongoose.connection.models.user;
